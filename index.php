@@ -2,7 +2,24 @@
 header( 'content-type: text/html; charset=utf-8' );
 error_reporting(-1);
 date_default_timezone_set("Europe/Paris");
+?>
 
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>LeBonCoin Parser</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">		<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">-->
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js" charset="utf-8"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+
+
+
+<?php
 function translateDate($date){
 
 	$french = array('Aujourd\'hui', 'Hier');
@@ -73,13 +90,24 @@ if (!empty($diff) or $_GET["viewold"] == "1"){
 	$i = 1;
 
 	if ($_GET["viewold"] == "1") $diff = $annonces;
+
+	echo "<div class='container-fluid'>";
 	foreach ($diff as $result) {
 		//echo '#'.$i++.' Publiée le '.$result['timestamp'].' '.date("d/m/y à H:i", $result['timestamp']).' ('.$result['rawdate'].') :<br />';
-		echo '#'.$i++.' Publiée le '.date("d/m/y à H:i", $result['timestamp']).':<br />';
-		echo '<a href="'.$result['url'].'" target="_blank">'.$result['title'].' ('.$result['price'].')</a><br />';
-		echo '<img src="'.$result['image'].'" alt="IMAGE"><hr>';
-
+		if ($i % 2 != 0) echo "<div class='row'>";
+		echo "<div class='col-md-6 col-lg-6'>";
+		echo "<div class='panel panel-primary'>";
+		echo '<div class="panel-heading panel-title"><a href="'.$result['url'].'" target="_blank">'.$result['title'].' ('.$result['price'].')</a></div>';
+		echo "<div class='panel-body'>";
+		echo '<div class="text-center"><img src="'.$result['image'].'" alt="IMAGE"></div>';
+		echo "</div>";
+		echo '<div class="panel-footer">#'.$i++.' Publiée le '.date("d/m/y à H:i", $result['timestamp']).'</div>';
+		echo "</div>";
+		if ($i % 2 != 0) echo "</div>";
+		echo "</div>";
 	}
+
+	echo "</div>";
 
 	file_put_contents('datas/annonces.txt', serialize($annonces));
 
@@ -91,3 +119,6 @@ if (!empty($diff) or $_GET["viewold"] == "1"){
 }
 
 ?>
+		</div>
+	</body>
+</html>
