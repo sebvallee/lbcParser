@@ -20,11 +20,13 @@ date_default_timezone_set("Europe/Paris");
 
 
 <?php
-function translateDate($date){
-
+function translateDate($strdate){
+	
+	//echo utf8_encode($strdate) . " ";
+	
 	$french = array('Aujourd\'hui', 'Hier');
 	$english = array('Today', 'Yesterday');
-	$french_month = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'aout', 'septembre', 'octobre', 'novembre', 'décembre');
+	$french_month = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
 	$month = date("n");
 	if ($month < 3) {
 		$year = date("Y")-1;
@@ -32,11 +34,12 @@ function translateDate($date){
 		$year = date("Y");
 	}
 	$english_month = array('january '.$year, 'february '.$year, 'march '.$year, 'april '.$year, 'may '.$year, 'june '.$year, 'july '.$year, 'august '.$year, 'september '.$year, 'october '.$year, 'november '.$year, 'december '.$year);
-	$date = str_replace($french, $english, $date);
+	$date = str_replace($french, $english, utf8_encode($strdate));
 	$date = str_replace($french_month, $english_month, $date);
+	//echo utf8_encode($date) . " ";
 	//echo "### ".$date." ###<br />";
 	$date = strtotime($date);
-
+	//echo $date . " <br />";
 	return $date;
 
 };
