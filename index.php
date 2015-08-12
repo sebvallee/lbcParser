@@ -46,7 +46,21 @@ function translateDate($strdate){
 
 include('simple_html_dom.php');
 $url = 'http://www.leboncoin.fr/equipement_auto/offres/pays_de_la_loire/occasions/?f=a&th=1&q=radiosat';
-if (isset($_POST['url']) && $_POST['url'] != "") $url = $_POST['url'];
+if (isset($_POST) && isset($_POST['url']) && $_POST['url'] != "") {
+	$url = $_POST['url'];
+}
+	//echo "Recherche par défaut en cours, entrez une URL pour la parser.<br />";
+	echo "<form role='form' method='post'>";
+	echo "<div class='form-group'>";
+	echo "<label for='url'>URL LeBonCoin à parser : </label>";
+	echo "<input name='url' type='text' class='form-control' name='url' placeholder='$url' />";
+	echo "</div>";
+	echo "<br />";
+	echo "<div class='form-group'>";
+	echo "<input name='submit' type='submit' class='form-control' value='Envoyer' />";
+	echo "</div>";
+	echo "</form>";
+
 $html = file_get_html($url);
 
 $annonces = array();
@@ -102,7 +116,9 @@ if (!empty($diff) or $_GET["viewold"] == "1"){
 		echo "<div class='panel panel-primary'>";
 		echo '<div class="panel-heading panel-title"><a href="'.$result['url'].'" target="_blank">'.$result['title'].' ('.$result['price'].')</a></div>';
 		echo "<div class='panel-body'>";
-		echo '<div class="text-center"><img src="'.$result['image'].'" alt="IMAGE"></div>';
+		echo '<div class="text-center">';
+		if ($result['image'] != "") echo '<img src="'.$result['image'].'" alt="IMAGE">';
+		echo '</div>';
 		echo "</div>";
 		echo '<div class="panel-footer">#'.$i++.' Publiée le '.date("d/m/y à H:i", $result['timestamp']).'</div>';
 		echo "</div>";
